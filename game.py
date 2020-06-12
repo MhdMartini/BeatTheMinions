@@ -1,5 +1,7 @@
 import sys
 import time
+from pygame import mixer
+
 
 BANNER_1 = '''
 .************ Welcome to Beat the Minions ****************. '''
@@ -12,16 +14,25 @@ BANNER_2 = '''
 '''
 
 
-# Print BANNER slowly for aesthetics
+# Print BANNER slowly with keyboard sounds for aesthetics
 def printer(text):
+    mixer.init()
+    mixer.music.load("keyboard.mp3")
+    mixer.music.play()
+    time.sleep(0.5)
+
     for character in text:
+        mixer.music.unpause()
         print(character, end = '')
-        if character == '*':
-            continue
-        if character in ('!,'):
+        if character == '!':
+            mixer.music.pause()
+            time.sleep(1.7)
+        if character in (','):
+            mixer.music.pause()
             time.sleep(1.3)
             continue
-
+        time.sleep(0.02)
+    mixer.music.pause()
     time.sleep(1)
 
 
@@ -189,6 +200,7 @@ class MajorCharacter(Character):
         print(f"{self.name} charged.")
 
 
+# Although this class is empty, it is useful to group Minions in their own class for future development.
 class Minion(Character):
     pass
 
